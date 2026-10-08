@@ -23,7 +23,11 @@ jobs:
         run: npx cap add android
 
       - name: مزامنة المشروع
-        run: npx cap sync android
+        run: mkdir -p www
+    cp index.html style.css app.js www/
+
+- name: مزامنة المشروع
+  run: npx cap sync android
 
       - name: بناء AAB
         working-directory: android
