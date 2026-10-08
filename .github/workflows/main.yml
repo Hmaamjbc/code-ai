@@ -1,0 +1,36 @@
+name: Build Android AAB
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: تحميل المشروع
+        uses: actions/checkout@v4
+
+      - name: تثبيت Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: تثبيت الحزم
+        run: npm install
+
+      - name: إضافة Android
+        run: npx cap add android
+
+      - name: مزامنة المشروع
+        run: npx cap sync android
+
+      - name: بناء AAB
+        working-directory: android
+        run: ./gradlew bundleRelease
+
+      - name: حفظ ملف AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: Code-AI-AAB
+          path: android/app/build/outputs/bundle/release/*.aab
